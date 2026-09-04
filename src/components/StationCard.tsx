@@ -2,7 +2,7 @@
 
 import { Heart, Radio } from "lucide-react";
 import EQBars from "./EQBars";
-import type { Station } from "@/lib/stations";
+import type { Station, StationRegion } from "@/lib/stations";
 import type { PlayerState } from "@/hooks/useRadio";
 
 interface StationCardProps {
@@ -14,7 +14,7 @@ interface StationCardProps {
   onToggleFavorite: (s: Station) => void;
 }
 
-const regionBadge: Record<Station["region"], { label: string; cls: string }> = {
+const regionBadge: Record<StationRegion, { label: string; cls: string }> = {
   ghana: { label: "🇬🇭 GH", cls: "text-yellow-400 bg-yellow-400/10" },
   africa: { label: "🌍 AF", cls: "text-emerald-400 bg-emerald-400/10" },
   world: { label: "🌐 WD", cls: "text-blue-400 bg-blue-400/10" },
@@ -28,7 +28,7 @@ export default function StationCard({
   onPlay,
   onToggleFavorite,
 }: StationCardProps) {
-  const badge = regionBadge[station.region];
+  const badge = station.region ? regionBadge[station.region] : regionBadge.world;
   const playing = isActive && playerState === "playing";
   const loading = isActive && playerState === "loading";
 

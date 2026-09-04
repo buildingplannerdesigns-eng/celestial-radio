@@ -4,6 +4,8 @@
  * Images: drop a PNG/JPG in /public/logos/ then set favicon to "/logos/your-file.png"
  * Streams: paste the direct audio URL (https://.../stream or .../listen).
  */
+export type StationRegion = "ghana" | "africa" | "world";
+
 export interface Station {
   id: string;
   name: string;
@@ -14,7 +16,7 @@ export interface Station {
   streamUrl: string;
   website?: string;
   favicon?: string;
-  region?: string;
+  region?: StationRegion;
 }
 
 export const GHANA: Station[] = [
