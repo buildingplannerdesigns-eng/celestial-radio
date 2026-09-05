@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import PWARegister from "./PWARegister";
@@ -102,9 +103,12 @@ export const viewport: Viewport = {
 };
 
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const stored = (await cookies()).get("cr_theme")?.value;
+  const theme = stored === "light" ? "light" : "dark";
+
   return (
-    <html lang="en" className={inter.variable} data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className={inter.variable} data-theme={theme} suppressHydrationWarning>
       <head>
         {/* Extra PWA/browser meta not covered by Next.js metadata API */}
         <meta name="mobile-web-app-capable" content="yes" />
@@ -116,7 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <ThemeProvider>
+        <ThemeProvider initialTheme={theme}>
           <PWARegister />
           {children}
         </ThemeProvider>

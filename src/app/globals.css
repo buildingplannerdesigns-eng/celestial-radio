@@ -587,6 +587,25 @@ nextjs-portal {
   gap: 12px;
   flex-shrink: 0;
 }
+.player-volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 140px;
+  flex-shrink: 0;
+}
+.player-volume button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 4px;
+  display: flex;
+}
+.player-volume input[type="range"] {
+  flex: 1;
+  min-width: 0;
+}
 
 @media (max-width: 900px) {
   .sidebar-backdrop {
@@ -714,6 +733,13 @@ input[type="range"]::-webkit-slider-thumb {
 @media (max-width: 640px) {
   .player-desktop {
     display: none !important;
+  }
+  .player-live {
+    display: none !important;
+  }
+  .player-volume {
+    width: 92px;
+    gap: 4px;
   }
   .theme-btn span {
     display: none;

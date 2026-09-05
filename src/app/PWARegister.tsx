@@ -11,7 +11,15 @@ export default function PWARegister() {
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") return;
+    if (process.env.NODE_ENV === "development") {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then((regs) => {
+          regs.forEach((reg) => reg.unregister());
+        });
+        caches.keys().then((keys) => keys.forEach((key) => caches.delete(key)));
+      }
+      return;
+    }
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker

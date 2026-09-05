@@ -1,7 +1,7 @@
 // Celestial Radio — Service Worker
 // Place this file at: /public/sw.js
 
-const CACHE = "celestial-radio-v2";
+const CACHE = "celestial-radio-v3";
 
 // Assets to cache on install (app shell)
 const SHELL = [
@@ -62,13 +62,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Never cache Next.js / HMR chunks — stale JS caused missing module factories
+  if (url.pathname.startsWith("/_next/") || url.pathname.includes(".hot-update.")) {
+    return;
+  }
+
   // For everything else: cache-first with network fallback
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request)
         .then((response) => {
-          // Cache successful GET responses for same-origin assets
           if (
             response.ok &&
             event.request.method === "GET" &&

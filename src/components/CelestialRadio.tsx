@@ -412,7 +412,7 @@ function PlayerBar({ current, state, volume, muted, sleepLeft, fav, onToggle, on
             )}
           </div>
           {playing && (
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+            <span className="player-live" style={{ display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
               <span style={{ position: "relative", width: 8, height: 8 }}>
                 <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "var(--live)", animation: "livePulse 1.6s ease-out infinite" }} />
                 <span style={{ display: "block", width: 8, height: 8, borderRadius: "50%", background: "var(--live)", position: "relative" }} />
@@ -470,14 +470,15 @@ function PlayerBar({ current, state, volume, muted, sleepLeft, fav, onToggle, on
               </div>
             )}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, width: 140 }}>
-            <button onClick={onMute} style={{ background: "none", border: 0, cursor: "pointer", color: "var(--muted)" }}>
-              {muted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
-            </button>
-            <input type="range" min={0} max={1} step={0.01} value={muted ? 0 : volume}
-              onChange={(e) => onVolume(parseFloat(e.target.value))}
-              style={{ flex: 1, "--vol": `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties} />
-          </div>
+        </div>
+        <div className="player-volume">
+          <button type="button" onClick={onMute} aria-label={muted || volume === 0 ? "Unmute" : "Mute"}>
+            {muted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
+          </button>
+          <input type="range" min={0} max={1} step={0.01} value={muted ? 0 : volume}
+            onChange={(e) => onVolume(parseFloat(e.target.value))}
+            aria-label="Volume"
+            style={{ "--vol": `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties} />
         </div>
       </div>
     </div>
@@ -791,6 +792,7 @@ export default function CelestialRadio() {
 
               <StationRow title="Recently played" stations={recent} onSeeAll={() => go("recents")} {...tileProps} />
               <StationRow title="Local radio" stations={GHANA} onSeeAll={() => go("ghana")} {...tileProps} />
+              <StationRow title="Volta" stations={byTag(GHANA, ["volta"])} {...tileProps} />
               <StationRow title="Africa" stations={AFRICA} onSeeAll={() => go("africa")} {...tileProps} />
               <StationRow title="Sports" stations={byTag(LOCAL, ["sports"])} {...tileProps} />
               <StationRow title="News & talk" stations={byTag(LOCAL, ["news", "talk"])} {...tileProps} />
